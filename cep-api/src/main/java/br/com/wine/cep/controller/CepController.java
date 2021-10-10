@@ -1,11 +1,12 @@
 package br.com.wine.cep.controller;
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,31 +31,31 @@ public class CepController {
 	private CepService cepService;
 	
 	@GetMapping
-    public @ResponseBody List<Cep> listaCep() throws EntityNotFoundException {
-      return cepService.findAll();
+    public @ResponseBody ResponseEntity<Collection<Cep>> listaCep() throws EntityNotFoundException {
+		return ResponseEntity.ok().body(cepService.findAll());
     }
 	
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED) 
-	public Cep cadastraCep(@RequestBody @Valid Cep cep) throws EntityNotFoundException, ConstraintsViolationException {
-		return cepService.create(cep);
+	public ResponseEntity<Cep> cadastraCep(@RequestBody @Valid Cep cep) throws EntityNotFoundException, ConstraintsViolationException {
+		return ResponseEntity.ok().body(cepService.create(cep));
 	}
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Cep deletaCep(@Valid @PathVariable Long id) throws EntityNotFoundException {
-		return cepService.delete(id);
+	public ResponseEntity<Cep> deletaCep(@Valid @PathVariable Long id) throws EntityNotFoundException {
+		return ResponseEntity.ok().body(cepService.delete(id));
 	}
 	
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Cep atualizaCep(@Valid @PathVariable Long id, @Valid @RequestBody Cep cep) throws EntityNotFoundException, ConstraintsViolationException {
-		return cepService.update(id, cep);
+	public ResponseEntity<Cep> atualizaCep(@Valid @PathVariable Long id, @Valid @RequestBody Cep cep) throws EntityNotFoundException, ConstraintsViolationException {
+		return ResponseEntity.ok().body(cepService.update(id, cep));
 	}
 	
 	@GetMapping("/{faixa}")
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody Cep localizarPorFaixa(@Valid @PathVariable Integer faixa) throws EntityNotFoundException {
-		return cepService.localizarPorFaixa(faixa);
+	public @ResponseBody ResponseEntity<Cep> localizarPorFaixa(@Valid @PathVariable Integer faixa) throws EntityNotFoundException {
+		return ResponseEntity.ok().body(cepService.localizarPorFaixa(faixa));
 	}
 }
